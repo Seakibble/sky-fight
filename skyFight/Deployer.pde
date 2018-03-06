@@ -19,13 +19,17 @@ class Deployer
     boulders = new ArrayList<CustomBody>();  
     
     hunters = new ArrayList<Hunter>();
-    player = new Hunter(box, true);
+    player = new Hunter(box, true, 0);
     hunters.add(player);
   }
   
   int particleCount()
   {
     return boulders.size();
+  }
+  
+  public void setPosition(PVector _pos) {
+    position = _pos;    
   }
   
   void draw()
@@ -84,7 +88,7 @@ class Deployer
   void addHunter()
   {
     if (hunters.size() < 8) {
-      hunters.add(new Hunter(mBoxRef, false));
+      hunters.add(new Hunter(mBoxRef, false, position.y));
     }
   }
   

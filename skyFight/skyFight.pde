@@ -1,3 +1,4 @@
+// Box2D stuff
 import shiffman.box2d.*;
 import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
@@ -12,10 +13,19 @@ Deployer deployer;
 
 Randomizer randomizer;
 
+// Networking stuff
+import oscP5.*;
+import netP5.*;
+
+OscP5 mOSC;
+
 void setup() 
 {
   size(1280,720);
   colorMode(HSB);
+  
+  mOSC = new OscP5(this, "239.0.0.1", 7777);
+  mOSC.plug(this, "setGravity", "/gravity");
   
   randomizer = new Randomizer();
   randomizer.update(0.05);
@@ -30,7 +40,7 @@ void setup()
   staticBodies = new ArrayList<CustomBody>();
   
   
-  float boundaryWidth = 50.0;  
+  float boundaryWidth = 500.0;  
   
   Config staticConfig = new Config(box, Identity.DEFAULT);
     staticConfig.type = BodyType.STATIC; 
@@ -58,9 +68,14 @@ void draw()
   }
 }
 
-void mousePressed()
+void setGravity(float gravityX, float gravityY)
 {
-  
+  box.setGravity(gravityX, -gravityY);
+  if (gravityY < 0) {
+    deployer.setPosition(new PVector(width/2, height+200));
+  } else {
+    deployer.setPosition(new PVector(width/2, -200));
+  }
 }
 
 void beginContact(Contact cp)

@@ -128,7 +128,8 @@ class CustomBody
   public void draw() 
   {
     Vec2 pos = getPosition();
-      if (pos.x > width || pos.x < 0 || pos.y > height * 2 || pos.y < -height) {
+      //if (pos.x > width || pos.x < 0 || pos.y > height * 2 || pos.y < -height) {
+      if (mConfig.health == 0) {
         isDead = true;
       }
       

@@ -9,7 +9,7 @@ class Hunter
   float mStep;
   boolean isDead;
   
-  public Hunter(Box2DProcessing _BoxRef, boolean _isPlayer)
+  public Hunter(Box2DProcessing _BoxRef, boolean _isPlayer, float _height)
   {
     isDead = false;
     isPlayer = _isPlayer;
@@ -39,7 +39,7 @@ class Hunter
       playerConfig.points = playerPoints;
       mCBody = new CustomBody(playerConfig);
     } else {
-      hunterConfig.position = new PVector(randomizer.values.x * width, -200);
+      hunterConfig.position = new PVector(randomizer.values.x * width, _height);
       hunterConfig.points = points;
       mCBody = new CustomBody(hunterConfig);
     }
@@ -68,10 +68,14 @@ class Hunter
         if (isPlayer) {
           spring.update(mouseX,mouseY);
           spring.display();
+          
         } else {
           spring.update(randomizer.values.x * width, randomizer.values.y * height);
         }
       } else {
+        if (isPlayer) {
+          isDead = true;
+        }
         spring.destroy();
         chain.destroy();
       }
