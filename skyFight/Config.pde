@@ -41,7 +41,7 @@ class Config {
     radius = 50;
     
     type = BodyType.DYNAMIC;
-    health = -1;
+    health = 0;
     
     switch (identity) {
     case WEAPON:

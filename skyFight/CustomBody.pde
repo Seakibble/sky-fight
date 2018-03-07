@@ -6,8 +6,10 @@ class CustomBody
   
   private Config mConfig;
   boolean isDead;
+  boolean damaged;
      
   public CustomBody(Config _config) {
+    damaged = false;
     isDead = false;
     mConfig = _config;
     if (mConfig.identity == Identity.HUNTER) {
@@ -128,18 +130,23 @@ class CustomBody
   public void draw() 
   {
     Vec2 pos = getPosition();
-      //if (pos.x > width || pos.x < 0 || pos.y > height * 2 || pos.y < -height) {
-      if (mConfig.health == 0) {
-        isDead = true;
-      }
-      
-      if (!isDead) { 
+    if ((pos.x > width || pos.x < 0 || pos.y > height * 2 || pos.y < -height) && mConfig.health == 0) {
+      isDead = true;
+    }
+    
+    if (!isDead) { 
       if (mConfig.identity == Identity.HUNTER || mConfig.identity == Identity.PLAYER) {
         if (mConfig.health > 0) {
           mConfig.colour = color((mConfig.health + 1), 250, 255);
         } else {
           mConfig.colour = color(0, 0, 0);
         }
+      }
+    
+      if (damaged) {
+        stroke(0);
+      } else {
+        noStroke();
       }
       
       fill(mConfig.colour);
@@ -149,10 +156,9 @@ class CustomBody
       pushMatrix();
         translate(position.x, position.y);
         rotate(-angle);
-        noStroke();
               
         switch (mShape) {
-          case CIRCLE:
+        case CIRCLE:
           ellipse(0, 0, mConfig.radius * 2, mConfig.radius * 2);
           //line(0, 0, mConfig.radius, 0);
           break;

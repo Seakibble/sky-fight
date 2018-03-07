@@ -8,9 +8,11 @@ class Hunter
   boolean isPlayer;
   float mStep;
   boolean isDead;
+  boolean gameOver;
   
   public Hunter(Box2DProcessing _BoxRef, boolean _isPlayer, float _height)
   {
+    gameOver = false;
     isDead = false;
     isPlayer = _isPlayer;
     mBoxRef = _BoxRef;
@@ -25,6 +27,8 @@ class Hunter
     
     Config hunterConfig = new Config(mBoxRef, Identity.HUNTER);
     Config playerConfig = new Config(mBoxRef, Identity.PLAYER);
+    
+    int chainSegments = 20;
     
     if (isPlayer) {
       ArrayList<Vec2> playerPoints = new ArrayList<Vec2>();
@@ -42,12 +46,13 @@ class Hunter
       hunterConfig.position = new PVector(randomizer.values.x * width, _height);
       hunterConfig.points = points;
       mCBody = new CustomBody(hunterConfig);
+      chainSegments = int(random(1, 7) + random(1, 7) + random(1, 7) + random(1, 7) + random(1, 7));
     }
     
     spring = new Spring(mBoxRef);
     spring.bind(mCBody.getPosition().x, mCBody.getPosition().y, mCBody);
     
-    chain = new Chain(mCBody, 20, mBoxRef);
+    chain = new Chain(mCBody, chainSegments, mBoxRef);
   }
   
   public Vec2 getPosition()
@@ -74,7 +79,7 @@ class Hunter
         }
       } else {
         if (isPlayer) {
-          isDead = true;
+          gameOver = true;
         }
         spring.destroy();
         chain.destroy();
@@ -98,7 +103,7 @@ class Hunter
   
   public void draw()
   {
-    chain.draw();
+    if (linksRemaining() > 0) chain.draw();
     if (!mCBody.isDead()) mCBody.draw();
     
     if (linksRemaining() < 1 && mCBody.isDead()) {

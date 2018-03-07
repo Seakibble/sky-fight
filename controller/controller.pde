@@ -1,8 +1,21 @@
+////////////////////////////////////
+////////////////////////////////////
+////                            ////
+////    SKY FIGHT               ////
+////    GRAVITY CONTROLLER      ////
+////    by Max Leeming          ////
+////    March 2018              ////
+////                            ////
+////////////////////////////////////
+////////////////////////////////////
+
 
 // Networking stuff
 import oscP5.*;
 import netP5.*;
 
+
+// Variables 
 OscP5 mOSC;
 
 PVector gravity;
@@ -10,6 +23,7 @@ float oneGee;
 PVector center;
 float scale;
 float offset;
+
 void setup() 
 {
   scale = 8;
@@ -21,7 +35,6 @@ void setup()
   colorMode(HSB);
   
   mOSC = new OscP5(this, "239.0.0.1", 7777);
-  
 }
 
 void draw()
@@ -72,11 +85,11 @@ void draw()
 
 void mouseDragged() {
   boolean sendMessage = false;
-  if (mouseX > 0 && mouseX < center.x * 2) {
+  if (mouseX > offset && mouseX < center.x * 2 + offset) {
     gravity.x = mouseX - center.x - offset;
     sendMessage = true;
   }
-  if (mouseY > 0 && mouseY < center.y * 2) {
+  if (mouseY > offset && mouseY < center.y * 2 + offset) {
     gravity.y = mouseY - center.y - offset;
     sendMessage = true;
   }
